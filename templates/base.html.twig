@@ -1,17 +1,102 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SymBook{% endblock %}</title>
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('CSS/bootstrap.css') }}">
+
+    <!-- Custom Global Styles -->
+    <style>
+        /* --- Navbar Styles --- */
+        .navbar {
+            padding-top: 0.4rem;
+            padding-bottom: 0.4rem;
+        }
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+        .nav-link {
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+        }
+        .navbar-nav .nav-item {
+            margin-right: 0.3rem;
+        }
+
+        /* --- Body Defaults --- */
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        /* --- Flash Messages --- */
+        .flash-message {
+            margin: 1rem auto;
+            width: 90%;
+            max-width: 600px;
+        }
+    </style>
+
+    {% block stylesheets %}{% endblock %}
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0d2235;">
+    <div class="container-fluid">
+        {# Left side - Website name with icon #}
+        <a class="navbar-brand d-flex align-items-center" href="{{ path('app_home') }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book me-2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            SymBook
+        </a>
+        {# Right side - Navigation links #}
+        <div class="d-flex">
+            <ul class="navbar-nav">
+                {# Display these when user is NOT logged in #}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_login') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-in me-1">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                            <polyline points="10 17 15 12 10 7"></polyline>
+                            <line x1="15" y1="12" x2="3" y2="12"></line>
+                        </svg>
+                        Connexion
+                    </a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a class="nav-link" href="{{ path('app_register') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus me-1">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" y1="8" x2="20" y2="14"></line>
+                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                        </svg>
+                        Inscription
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Page Content -->
+{% block body %}{% endblock %}
+
+<!-- Bootstrap JS (Optional, needed for navbar toggling and dismissible alerts) -->
+<script src="{{ asset('JS/bootstrap.bundle.min.js') }}"></script>
+
+{% block javascripts %}{% endblock %}
+</body>
 </html>

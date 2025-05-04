@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<h1>Détail du livre</h1>
+    <div class="row">
+        <div class="col-3">
+            <img src="{{ livre.image }}" alt='{{ livre.titre }}'>
+        </div>
+        <div class="col">
+            <h2>{{ livre.titre }} ({{ livre.prix }} DT)</h2>
+            <h3>Editeur : {{ livre.editeur }}</h3>
+            <h3>date d'édition : {{ livre.dateEdition | date('d-m-Y') }}</h3>
+            <h4>ISBN : {{ livre.iSBN }}</h4>
+            <p>{{ livre.resume }}</p>
+        </div>
+    </div>
+{% endblock %}

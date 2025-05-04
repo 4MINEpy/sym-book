@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .password-reset-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .password-reset-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .password-reset-header h1 {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .password-reset-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1rem;
+            display: block;
+            color: #6366f1;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            outline: none;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #6366f1;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        .password-help-text {
+            color: #666;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: block;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #6366f1;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .password-strength.weak {
+            color: #ef4444;
+        }
+
+        .password-strength.medium {
+            color: #f59e0b;
+        }
+
+        .password-strength.strong {
+            color: #10b981;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="password-reset-container">
+        <div class="password-reset-header">
+            <h1>Créer un nouveau mot de passe</h1>
+            <p>Choisissez un mot de passe sécurisé</p>
+        </div>
+
+        {{ form_start(resetForm) }}
+        <div class="form-group">
+            {{ form_label(resetForm.plainPassword.first, 'Nouveau mot de passe', {
+                'label_attr': {'class': 'form-label'}
+            }) }}
+            {{ form_widget(resetForm.plainPassword.first, {
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': 'Entrez votre nouveau mot de passe',
+                    'data-password-strength': ''
+                }
+            }) }}
+            <span class="password-help-text">
+                Minimum 12 caractères. Utilisez des lettres, chiffres et caractères spéciaux.
+            </span>
+            <div id="password-strength" class="password-strength"></div>
+            {{ form_errors(resetForm.plainPassword.first) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(resetForm.plainPassword.second, 'Confirmer le mot de passe', {
+                'label_attr': {'class': 'form-label'}
+            }) }}
+            {{ form_widget(resetForm.plainPassword.second, {
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': 'Confirmez votre nouveau mot de passe'
+                }
+            }) }}
+            {{ form_errors(resetForm.plainPassword.second) }}
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;">
+                <!-- Icône SVG inchangée -->
+            </svg>
+            Réinitialiser le mot de passe
+        </button>
+        {{ form_end(resetForm) }}
+
+        <div class="login-link">
+            Vous vous souvenez de votre mot de passe ? <a href="{{ path('app_login') }}">Se connecter</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .reset-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .reset-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .reset-header h1 {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .reset-header p {
+            color: #666;
+        }
+
+        .reset-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1rem;
+            display: block;
+            color: #6366f1;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            outline: none;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #6366f1;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        .help-text {
+            color: #666;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: block;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #6366f1;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="reset-container">
+        <div class="reset-header">
+            <h1>Réinitialiser votre mot de passe</h1>
+            <p>Entrez votre email pour recevoir un lien de réinitialisation</p>
+        </div>
+
+        {% for flash_error in app.flashes('reset_password_error') %}
+            <div class="alert alert-danger" role="alert">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;">
+                    <path d="M12 8V12V8ZM12 16H12.01H12ZM21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {{ flash_error }}
+            </div>
+        {% endfor %}
+
+        {{ form_start(requestForm) }}
+        <div class="form-group">
+            {{ form_widget(requestForm.email, {
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': 'Entrez votre adresse email'
+                }
+            }) }}
+            <span class="help-text">
+                Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+            </span>
+            {{ form_errors(requestForm.email) }}
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px; vertical-align: middle;">
+                <path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Envoyer l'email de réinitialisation
+        </button>
+        {{ form_end(requestForm) }}
+
+        <div class="login-link">
+            Vous vous souvenez de votre mot de passe ? <a href="{{ path('app_login') }}">Se connecter</a>
+        </div>
+    </div>
+{% endblock %}

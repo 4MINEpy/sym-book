@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="container">
+    <h1>Espace Admin</h1>
+    <h2>Livres</h2>
+    <div class="table-responsive">
+        <div class="count">
+            {{ livres.getTotalItemCount }}
+        </div>
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Titre</th>
+                <th scope="col">Prix</th>
+                <th scope="col">Editeur</th>
+                <th scope="col">Categorie</th>
+                <th scope="col">Date Edition</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for livre in livres %}
+                <tr>
+                    <td>{{ livre.id }}</td>
+                    <td>{{ livre.titre }}</td>
+                    <td>{{ livre.prix }}</td>
+                    <td>{{ livre.editeur }}</td>
+                    <td>{{ livre.categorie.libelle }}</td>
+                    <td>{{ livre.dateEdition | date('Y/m/d') }}</td>
+                    <td>
+                        <a href="{{ path('livre_show', {'id': livre.id}) }}" class="btn btn-info btn-sm">Voir détail</a>
+                        <a href="{{ path('livre_update', {'id': livre.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                        <a href="{{ path('livre_delete', {'id': livre.id}) }}" class="btn btn-danger btn-sm">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="navigation">
+            {{ knp_pagination_render(livres) }}
+        </div>
+    </div>
+    <a href="{{ path('create_livre') }}" class="btn btn-success">Ajouter un livre</a>
+</div>
+{% endblock %}

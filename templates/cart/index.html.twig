@@ -1,0 +1,49 @@
+{% extends 'home/homeTemplate.html.twig' %}
+
+{% block title %}Mon Panier{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <h1>Mon Panier</h1>
+
+        {% if items|length > 0 %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Livre</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.livre.titre }}</td>
+                        <td>{{ item.livre.prix }} €</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.livre.prix * item.quantity }} €</td>
+                        <td>
+                            <a href="{{ path('cart_remove', {'id': item.livre.id}) }}" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="3">Total :</td>
+                    <td>{{ total }} €</td>
+                    <td></td>
+                </tr>
+                </tfoot>
+            </table>
+        {% else %}
+            <div class="alert alert-info">
+                Votre panier est vide
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

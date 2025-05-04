@@ -1,0 +1,151 @@
+{% extends 'home/homeTemplate.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid py-5" style="background-color: #f8f9fa;">
+
+        {# Compact Hero Section #}
+        <div class="row mb-4 align-items-center">
+            <div class="col-md-6">
+                <h1 class="fw-bold mb-2">Bienvenue sur <span class="text-primary">SymBook</span></h1>
+                <p class="text-muted mb-3">Découvrez notre collection de livres dans toutes les catégories.</p>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary px-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open me-1">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                        </svg>
+                        Explorer
+                    </button>
+                    <button class="btn btn-outline-secondary px-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-award me-1">
+                            <circle cx="12" cy="8" r="7"></circle>
+                            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                        </svg>
+                        Best-sellers
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 d-none d-md-block">
+                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Bookshelf" class="img-fluid rounded" style="max-height: 200px; width: auto;">
+            </div>
+        </div>
+
+            {# Featured Books Section #}
+            <div class="row mb-4">
+                <div class="col-12 d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="h4 fw-bold">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star me-2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        Nos Livres
+                    </h2>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Trier par
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Plus récents</a></li>
+                            <li><a class="dropdown-item" href="#">Prix croissant</a></li>
+                            <li><a class="dropdown-item" href="#">Prix décroissant</a></li>
+                            <li><a class="dropdown-item" href="#">Meilleures ventes</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                {# Books Grid #}
+                <div class="row g-4">
+                    {% for livre in livres %}
+                        <div class="col-md-6 col-lg-4 col-xl-3">
+                            <div class="card h-100 shadow-sm border-0">
+                                <div class="position-relative">
+                                    <img src="{{ livre.image ? livre.image : 'https://via.placeholder.com/300x450?text=Couverture+manquante' }}"
+                                         class="card-img-top"
+                                         alt="{{ livre.titre }}"
+                                         style="height: 300px; object-fit: cover;">
+                                    <div class="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 m-2 rounded">
+                                        <small>{{ livre.categorie.libelle }}</small>
+                                    </div>
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title mb-2">{{ livre.titre }}</h5>
+                                    <p class="text-muted mb-3"><small>{{ livre.editeur }}</small></p>
+                                    <div class="mt-auto d-flex justify-content-between align-items-center">
+                                        <span class="h5 text-primary mb-0">{{ livre.prix }} €</span>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ path('detail_livre',{id:livre.id}) }}">
+                                            <button class="btn btn-sm btn-outline-primary">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                    <circle cx="12" cy="12" r="3"></circle>
+                                                </svg>
+                                            </button>
+                                            </a>
+                                            <form action="{{ path('cart_add', {'id': livre.id}) }}" method="post">
+                                                <button type="submit" class="btn btn-sm btn-primary">
+                                                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart">
+                                                        <circle cx="9" cy="21" r="1"></circle>
+                                                        <circle cx="20" cy="21" r="1"></circle>
+                                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                                    </svg>
+                                                    Ajouter
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-12 text-center py-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book text-muted mb-3">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                            <h4 class="text-muted">Aucun livre disponible pour le moment</h4>
+                            <p class="text-muted">Revenez plus tard pour découvrir notre collection</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {# Categories Section #}
+            <div class="row mt-5 mb-4">
+                <div class="col-12 mb-4">
+                    <h2 class="h4 fw-bold">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid me-2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        Catégories
+                    </h2>
+                </div>
+                <div class="col-12">
+                    <div class="row g-3">
+                        {% for category in categories|default([])|slice(0, 8) %}
+                            <div class="col-6 col-md-3">
+                                <a href="#" class="text-decoration-none">
+                                    <div class="card border-0 shadow-sm h-100 hover-shadow">
+                                        <div class="card-body text-center py-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book text-primary mb-2">
+                                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                            </svg>
+                                            <h5 class="mb-0">{{ category.libelle }}</h5>
+                                            <small class="text-muted">{{ category.livres|length }} livres</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="col-12 text-center py-3">
+                                <p class="text-muted">Aucune catégorie disponible</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

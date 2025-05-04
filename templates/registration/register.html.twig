@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+        <div class="w-100" style="max-width: 450px; margin-top: 10px; margin-bottom: 20px;">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h1 class="h5 mb-0">Créer un compte</h1>
+                </div>
+                <div class="card-body p-4">
+                    {% for flash_error in app.flashes('verify_email_error') %}
+                        <div class="alert alert-danger mb-3 py-2" role="alert">{{ flash_error }}</div>
+                    {% endfor %}
+
+                    {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.firstName, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.firstName, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(registrationForm.firstName) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.lastName, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.lastName, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(registrationForm.lastName) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(registrationForm.email) }}
+                    </div>
+
+                    {# Mot de passe #}
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.plainPassword.first, 'Mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(registrationForm.plainPassword.first) }}
+                        <div class="form-text">Minimum 6 caractères</div>
+                    </div>
+
+                    {# Confirmation du mot de passe #}
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.plainPassword.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(registrationForm.plainPassword.second) }}
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                        {{ form_label(registrationForm.agreeTerms, "J'accepte les conditions d'utilisation", {'label_attr': {'class': 'form-check-label'}}) }}
+                        {{ form_errors(registrationForm.agreeTerms) }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 mb-3">
+                        S'inscrire
+                    </button>
+
+                    <div class="text-center small">
+                        Vous avez déjà un compte ? <a href="{{ path('app_login') }}" class="text-decoration-none">Se connecter</a>
+                    </div>
+
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .card {
+            border-radius: 8px;
+        }
+        .form-control {
+            padding: 0.5rem 0.75rem;
+        }
+        .btn-primary {
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-check-input {
+            margin-top: 0.15em;
+        }
+    </style>
+{% endblock %}
