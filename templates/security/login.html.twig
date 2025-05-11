@@ -303,6 +303,24 @@
                         Se connecter
                     </button>
                 </form>
+                <div >
+                    <div style="margin-bottom: 1.5rem;">
+                        <a href="{{ path('auth_oauth_connect',{service:'google'}) }}" class="btn mt-5"
+                           style="background: #fff; color: #444; border: 1px solid #ddd; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 0.75rem;">
+                            <svg width="22" height="22" viewBox="0 0 48 48" style="vertical-align: middle;">
+                                <g>
+                                    <path fill="#4285F4" d="M24 9.5c3.54 0 6.7 1.22 9.19 3.23l6.85-6.85C36.89 2.52 30.82 0 24 0 14.98 0 6.88 5.32 2.69 13.09l7.98 6.2C13.13 13.65 18.18 9.5 24 9.5z"/>
+                                    <path fill="#34A853" d="M46.09 24.55c0-1.67-.15-3.29-.43-4.85H24v9.19h12.38c-.54 2.9-2.19 5.36-4.67 7.01v5.82h7.54C44.98 37.78 46.09 31.61 46.09 24.55z"/>
+                                    <path fill="#FBBC05" d="M10.67 28.29A14.51 14.51 0 0 1 9.5 24c0-1.49.25-2.94.68-4.29v-5.82H2.69A23.9 23.9 0 0 0 0 24c0 3.82.91 7.44 2.69 10.91l7.98-6.2z"/>
+                                    <path fill="#EA4335" d="M24 48c6.82 0 12.53-2.26 16.71-6.13l-7.54-5.82c-2.09 1.4-4.77 2.22-7.67 2.22-5.82 0-10.77-4.15-12.53-9.71l-7.98 6.2C6.88 42.68 14.98 48 24 48z"/>
+                                    <path fill="none" d="M0 0h48v48H0z"/>
+                                </g>
+                            </svg>
+                            Continuer avec Google
+                        </a>
+                    </div>
+                </div>
+
 
                 <div class="login-footer">
                     Vous n'avez pas de compte ? <a href="{{ path('app_register') }}">S'inscrire</a>

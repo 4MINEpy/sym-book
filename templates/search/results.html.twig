@@ -1,0 +1,68 @@
+{% extends 'home/homeTemplate.html.twig' %}
+{% block title %}Résultats de la recherche{% endblock %}
+
+{% block body %}
+    <h2>Résultats pour "{{ query }}" ({{ type }})</h2>
+    {% if results is empty %}
+        <p>Aucun résultat trouvé.</p>
+    {% else %}
+<div class="container-fluid py-5" style="background-color: #f8f9fa;">
+
+<div class="row mb-4">
+
+
+                    {# Books Grid #}
+                    <div class="row g-4">
+                        {% for livre in results %}
+                        <div class="col-md-6 col-lg-4 col-xl-3">
+                            <div class="card h-100 shadow-sm border-0">
+                                <div class="position-relative">
+                                    <img src="{{ livre.image ? livre.image : 'https://via.placeholder.com/300x450?text=Couverture+manquante' }}"
+                                         class="card-img-top"
+                                         alt="{{ livre.titre }}"
+                                         style="height: 300px; object-fit: cover;">
+                                    <div class="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 m-2 rounded">
+                                        <small>{{ livre.categorie.libelle }}</small>
+                                    </div>
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title mb-2">{{ livre.titre }}</h5>
+                                    <p class="text-muted mb-3"><small>{{ livre.editeur }}</small></p>
+                                    <div class="mt-auto d-flex justify-content-between align-items-center">
+                                        <span class="h5 text-primary mb-0">{{ livre.prix }} €</span>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ path('detail_livre',{id:livre.id}) }}">
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                        <circle cx="12" cy="12" r="3"></circle>
+                                                    </svg>
+                                                </button>
+                                            </a>
+                                            <form action="{{ path('cart_add', {'id': livre.id}) }}" method="post">
+                                                <button type="submit" class="btn btn-sm btn-primary">
+                                                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart">
+                                                        <circle cx="9" cy="21" r="1"></circle>
+                                                        <circle cx="20" cy="21" r="1"></circle>
+                                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                                    </svg>
+                                                    Ajouter
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+</div>
+
+                </div>
+            </div>
+</div>
+</div>
+</div>
+    {% endif %}
+{% endblock %}
+

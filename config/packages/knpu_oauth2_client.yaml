@@ -1,0 +1,13 @@
+knpu_oauth2_client:
+    clients:
+        # configure your clients as described here: https://github.com/knpuniversity/oauth2-client-bundle#configuration
+        google:
+            type: google
+            #googleauhtid est une variable d'environement
+            client_id: '%env(GOOGLE_OAUTH_ID)%'
+            client_secret: '%env(GOOGLE_OAUTH_SECRET)%'
+            #ROUTE DE REDIRECTION
+            redirect_route: auth_oauth_check
+            redirect_params:
+                #clee service pour faire la difference si j'ai plsr google fb github
+                service: google

@@ -21,9 +21,14 @@
 
         {# Middle - Search bar #}
         <div class="d-flex justify-content-center flex-grow-1 mx-4">
-            <form class="d-flex w-100" style="max-width: 600px;">
+            <form class="d-flex w-100" style="max-width: 600px;" method="get" action="{{ path('search_books') }}">
                 <div class="input-group">
-                    <input class="form-control" type="search" placeholder="Rechercher un livre..." aria-label="Search">
+                    <select class="form-select" name="type" style="max-width: 150px;">
+                        <option value="titre" selected>Titre</option>
+                        <option value="auteur">Auteur</option>
+                        <option value="categorie">Catégorie</option>
+                    </select>
+                    <input class="form-control" type="search" name="q" placeholder="Rechercher un livre..." aria-label="Search" required>
                     <button class="btn btn-primary" type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
                             <circle cx="11" cy="11" r="8"></circle>
@@ -32,6 +37,7 @@
                     </button>
                 </div>
             </form>
+
         </div>
 
         {# Right side - Navigation links #}
