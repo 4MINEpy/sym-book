@@ -40,14 +40,17 @@
                         Nos Livres
                     </h2>
                     <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                id="sortDropdown" data-bs-toggle="dropdown"
+                                aria-expanded="false">
                             Trier par
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Plus récents</a></li>
-                            <li><a class="dropdown-item" href="#">Prix croissant</a></li>
-                            <li><a class="dropdown-item" href="#">Prix décroissant</a></li>
-                            <li><a class="dropdown-item" href="#">Meilleures ventes</a></li>
+                        <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                            <li><a class="dropdown-item" href="{{ path('app_home', {sort: 'default'}) }}">Par défaut</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_home', {sort: 'recent'}) }}">Plus récents</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_home', {sort: 'price_asc'}) }}">Prix croissant</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_home', {sort: 'price_desc'}) }}">Prix décroissant</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_home', {sort: 'bestsellers'}) }}">Meilleures ventes</a></li>
                         </ul>
                     </div>
                 </div>
