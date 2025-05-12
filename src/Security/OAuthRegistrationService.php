@@ -25,7 +25,6 @@ class OAuthRegistrationService
             ->setEmail($resourceOwner->getEmail())
             ->setGoogleId($resourceOwner->getId())
             ->setFirstName($resourceOwner->getFirstName())
-            ->setLastName($resourceOwner->getLastName())
             ->setIsVerified(true)
             ->setRoles(['ROLE_USER']);
         $this->repository->add($user, true);

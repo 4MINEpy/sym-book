@@ -1,12 +1,10 @@
 <?php
 
-// src/Controller/CartController.php
 namespace App\Controller;
 
 use App\Repository\LivresRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -71,6 +69,20 @@ class CartController extends AbstractController
 
         if (!empty($cart[$id])) {
             unset($cart[$id]);
+        }
+
+        $session->set('cart', $cart);
+
+        return $this->redirectToRoute('cart_index');
+    }
+    #[Route('/cart/update/{id}', name: 'cart_update')]
+    public function update($id, Request $request, SessionInterface $session)
+    {
+        $quantity = $request->request->get('quantity', 1);
+        $cart = $session->get('cart', []);
+
+        if (!empty($cart[$id])) {
+            $cart[$id] = $quantity;
         }
 
         $session->set('cart', $cart);

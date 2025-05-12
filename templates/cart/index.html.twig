@@ -22,7 +22,20 @@
                     <tr>
                         <td>{{ item.livre.titre }}</td>
                         <td>{{ item.livre.prix }} €</td>
-                        <td>{{ item.quantity }}</td>
+                        <td>
+                            <form action="{{ path('cart_update', {'id': item.livre.id}) }}" method="post" class="d-inline">
+                                <div class="input-group" style="width: 120px;">
+                                    <input type="number"
+                                           name="quantity"
+                                           value="{{ item.quantity }}"
+                                           min="1"
+                                           class="form-control form-control-sm">
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </td>
                         <td>{{ item.livre.prix * item.quantity }} €</td>
                         <td>
                             <a href="{{ path('cart_remove', {'id': item.livre.id}) }}" class="btn btn-danger btn-sm">
