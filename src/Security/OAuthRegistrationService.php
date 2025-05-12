@@ -21,9 +21,15 @@ class OAuthRegistrationService
      */
     public function persist(ResourceOwnerInterface $resourceOwner): User
     {
-        $user= (new User())->setEmail($resourceOwner->getEmail())->setGoogleId($resourceOwner->getId());
-        $this->repository->add($user,true);
-        return $user;
+        $user = (new User())
+            ->setEmail($resourceOwner->getEmail())
+            ->setGoogleId($resourceOwner->getId())
+            ->setFirstName($resourceOwner->getFirstName())
+            ->setLastName($resourceOwner->getLastName())
+            ->setIsVerified(true)
+            ->setRoles(['ROLE_USER']);
+        $this->repository->add($user, true);
 
+        return $user;
     }
 }

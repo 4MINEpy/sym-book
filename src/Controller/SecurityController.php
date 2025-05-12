@@ -1,17 +1,28 @@
 <?php
 
 namespace App\Controller;
-
+use Symfony\Component\Routing\RouterInterface;
+use App\Entity\User;
+use App\Repository\UserRepository;
+use App\Security\AbstractOAuthAthenticator;
+use App\Security\GoogleAuthenticator;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
+use League\OAuth2\Client\Provider\GoogleUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
 class SecurityController extends AbstractController
 {
@@ -48,10 +59,49 @@ class SecurityController extends AbstractController
             }
             return $clientRegistry->getClient($service)->redirect(self::SCOPES[$service]);
     }
-    #[Route(path: '/oauthSB/check/{service}', name: 'auth_oauth_check',methods: ['GET'])]
+    #[Route(path: '/oauthSB/check/{service}', name: 'auth_oauth_check', methods: ['GET'])]
+    public function check(
+        string $service,
+        Request $request,
+        UserRepository $userRepository,
+        ClientRegistry $clientRegistry,
+        GoogleAuthenticator $authenticator,
+        RouterInterface $router// Inject the concrete authenticator (Google in this case)
+    ): Response {
+        // Verify the service matches the authenticator's service name
 
-    public function check(): Response
-    {
-        return new Response(status:200);
+
+        try {
+            // 1. Authenticate the request using the authenticator
+            $passport = $authenticator->authenticate($request);
+
+            // 2. Get the user from the passport
+            $user = $passport->getUser();
+
+            if (!$user instanceof UserInterface) {
+                throw new AuthenticationException('Invalid user returned from authenticator');
+            }
+
+            // 3. Create a token for the authenticated user
+            $token = new PostAuthenticationToken(
+                $user,
+                'main', // Your firewall name
+                $user->getRoles()
+            );
+
+            // 4. Let the authenticator handle the successful authentication response
+            return $authenticator->onAuthenticationSuccess($request, $token, 'main');
+
+        } catch (AuthenticationException $exception) {
+            // Handle authentication failure
+            return $authenticator->onAuthenticationFailure($request, $exception);
+        } catch (\Exception $exception) {
+            // Handle other unexpected exceptions
+            return new RedirectResponse(
+                $router->generate('app_login', ['error' => $exception->getMessage()]),
+                Response::HTTP_TEMPORARY_REDIRECT
+            );
+        }
     }
+
 }

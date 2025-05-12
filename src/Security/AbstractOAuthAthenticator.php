@@ -64,14 +64,18 @@ abstract class AbstractOAuthAthenticator extends OAuth2Authenticator {
             //recuperer le user
             $user=$this->getUserFromResourceOwner($resourceOwner,$this->repository);
             //en cas ou l'utilisateur n'existe pas on cree son compte
-            if(null==$user){
-                    $user=$this->registrationService->persist($resourceOwner,$this->repository);
+            if (null === $user) {
+                $user = $this->registrationService->persist($resourceOwner);
             }
             //en cas il existe on retourne un passpost : un moyen pour confirmer une identite
-            return new SelfValidatingPassport(new UserBadge($user->getUserIdentifier()
-                ,fn ()=> $user/**renvoyer l'utilisateur dans la base**/),badges: [
-                new RememberMeBadge()
-            ]);//on retourne l'identifiant : dans ce cas le mail
+            return new SelfValidatingPassport(
+                new UserBadge($user->getUserIdentifier(), function ($userIdentifier) {
+                    return $this->repository->findOneBy(['email' => $userIdentifier]);
+                }),
+                [new RememberMeBadge()]
+            );
+
+
         }
         public function getClient():OAuth2ClientInterface
         {
