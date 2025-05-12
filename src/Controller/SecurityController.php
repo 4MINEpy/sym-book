@@ -63,45 +63,39 @@ class SecurityController extends AbstractController
     public function check(
         string $service,
         Request $request,
-        UserRepository $userRepository,
-        ClientRegistry $clientRegistry,
+        UserAuthenticatorInterface $userAuthenticator,
         GoogleAuthenticator $authenticator,
-        RouterInterface $router// Inject the concrete authenticator (Google in this case)
+        RouterInterface $router
     ): Response {
-        // Verify the service matches the authenticator's service name
-
-
         try {
-            // 1. Authenticate the request using the authenticator
+            // 1. Authenticate and get the Passport
             $passport = $authenticator->authenticate($request);
 
-            // 2. Get the user from the passport
+            // 2. Extract the user from the Passport
             $user = $passport->getUser();
 
             if (!$user instanceof UserInterface) {
                 throw new AuthenticationException('Invalid user returned from authenticator');
             }
 
-            // 3. Create a token for the authenticated user
-            $token = new PostAuthenticationToken(
+            // 3. Use UserAuthenticatorInterface to log in the user properly
+            return $userAuthenticator->authenticateUser(
                 $user,
-                'main', // Your firewall name
-                $user->getRoles()
+                $authenticator,
+                $request
             );
 
-            // 4. Let the authenticator handle the successful authentication response
-            return $authenticator->onAuthenticationSuccess($request, $token, 'main');
-
         } catch (AuthenticationException $exception) {
-            // Handle authentication failure
+            // Authentication failure handling
             return $authenticator->onAuthenticationFailure($request, $exception);
         } catch (\Exception $exception) {
-            // Handle other unexpected exceptions
+            // Other errors, redirect to login with error message
             return new RedirectResponse(
                 $router->generate('app_login', ['error' => $exception->getMessage()]),
                 Response::HTTP_TEMPORARY_REDIRECT
             );
         }
     }
+
 
 }
